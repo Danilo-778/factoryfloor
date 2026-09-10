@@ -1,0 +1,79 @@
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public enum TipoArmadilha { Espetos, Torreta }
+
+public class ArmadilhasConfig : MonoBehaviour
+{
+    [Header("Configuração Geral")]
+    [SerializeField] private TipoArmadilha tipo = TipoArmadilha.Espetos;
+
+    [Header("⚙️ Configurações do torreta")]
+    [SerializeField] private float Tempodisparo = 2f;
+    [SerializeField] private float velocidade = 3f;
+    [SerializeField] private Transform pontoDisparo = null;
+    [SerializeField] private GameObject prefabProjetil = null;
+
+    [Header("⚡ Configurações do espinhos")]
+    [SerializeField] private float tempoAtivo = 2f;     // Duração do espinho ligado
+    [SerializeField] private float tempoInativo = 1.5f; // Duração do espinho desligado
+    [SerializeField] private float atrasoInicial = 0f;  // ⏱️ Tempo de espera ANTES de iniciar o ritmo
+    [SerializeField] private Collider2D colisorDano;
+
+    private Animator animator;
+    private float cronometro;
+    private int estado;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+
+        estado = 1;
+        cronometro = 0f;
+    }
+    private void Update()
+    {
+        switch (tipo)
+        {
+            case TipoArmadilha.Espetos:
+                AtualizarEspetos();
+                break;
+            case TipoArmadilha.Torreta:
+                AtualizarTorreta();
+                break;
+        }
+
+    }
+    private void AtualizarEspetos()
+    {
+        cronometro += Time.deltaTime;
+        if (cronometro < tempoAtivo)
+
+        {
+            animator.SetInteger("Estado", 1);
+
+            colisorDano.enabled = true;
+
+        }
+        else if (cronometro < tempoAtivo + tempoInativo)
+        {
+            animator.SetInteger("Estado", 3);
+            colisorDano.enabled = false;
+
+            ;
+        }
+        else
+        {
+            cronometro = 0f;
+        }
+
+    }
+
+    private void AtualizarTorreta()
+    {
+
+    }
+
+}
+  

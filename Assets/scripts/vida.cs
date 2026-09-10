@@ -10,7 +10,7 @@ public class VidaJogador : MonoBehaviour
     {
         vidas--;
 
-        Debug.Log("Vidas restantes: " + vidas);
+        Debug.Log("Tomou dano! Vidas restantes: " + vidas);
 
         if (vidas <= 0)
         {

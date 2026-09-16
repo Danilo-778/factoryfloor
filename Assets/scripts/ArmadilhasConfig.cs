@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,9 +10,10 @@ public class ArmadilhasConfig : MonoBehaviour
 {
     [Header("Configuração Geral")]
     [SerializeField] private TipoArmadilha tipo = TipoArmadilha.Espetos;
+    public int valorDano = 1;
 
     [Header("⚙️ Configurações do torreta")]
-    [SerializeField] private float Tempodisparo = 2f;
+    [SerializeField] private float TempoDisparo = 2f;
     [SerializeField] private float velocidade = 3f;
     [SerializeField] private Transform pontoDisparo = null;
     [SerializeField] private GameObject prefabProjetil = null;
@@ -72,13 +75,28 @@ public class ArmadilhasConfig : MonoBehaviour
 
     private void AtualizarTorreta()
     {
+        cronometro += Time.deltaTime;
+       
+        if (cronometro >= TempoDisparo)
+        {
 
+            GameObject projetil = Instantiate(prefabProjetil, pontoDisparo.position, pontoDisparo.rotation);
+
+            Rigidbody2D rbProjetil = projetil.GetComponent<Rigidbody2D>();
+            if (rbProjetil != null)
+            {
+                rbProjetil.linearVelocity = Vector2.left * velocidade;
+            }
+
+            cronometro = 0f;
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        UnityEngine.Debug.Log("Trigger detectado com: " + other.name + " | Tag: " + other.tag);
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<VidaJogador>().TomarDano();
+            other.GetComponent<VidaJogador>().TomarDano(valorDano);
         }
     }
 }

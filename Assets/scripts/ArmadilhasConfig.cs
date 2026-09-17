@@ -83,7 +83,7 @@ public class ArmadilhasConfig : MonoBehaviour
             GameObject projetil = Instantiate(prefabProjetil, pontoDisparo.position, pontoDisparo.rotation);
 
             Rigidbody2D rbProjetil = projetil.GetComponent<Rigidbody2D>();
-            if (rbProjetil != null)
+           if (rbProjetil != null)
             {
                 rbProjetil.linearVelocity = Vector2.left * velocidade;
             }
